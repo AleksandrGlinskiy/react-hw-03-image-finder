@@ -6,6 +6,8 @@ import { Searchbar } from './Searchbar/Searchbar';
 export class App extends Component {
   state = {
     searchText: '',
+    currentPage: ''
+    
   };
 
   handleSearchbar = searchText => {
@@ -16,7 +18,7 @@ export class App extends Component {
     return (
       <div className={css.App}>
         <Searchbar onSubmit={this.handleSearchbar} />
-        <ImageGallery searchText={this.state.searchText} />
+        <ImageGallery searchText={this.state.searchText} currentPage={this.state.currentPage} />
       </div>
     );
   }
