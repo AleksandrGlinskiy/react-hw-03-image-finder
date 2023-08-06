@@ -42,11 +42,11 @@ export class ImageGallery extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.searchText !== this.props.searchText) {
-      this.setState(prevState => ({
+      this.setState({
         status: STATUS.PENDING,
         galleryItems: [],
         currentPage: this.state.currentPage,
-      }));
+      });
 
       this.fetchMoreImages();
     }
