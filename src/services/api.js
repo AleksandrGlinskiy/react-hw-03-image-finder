@@ -8,5 +8,6 @@ export const getImages = (searchImage, currentPage) => {
     if (response.ok) {
       return response.json();
     } else return Promise.reject(new Error(`not found ${searchImage}`));
-  });
+  })
+  
 };

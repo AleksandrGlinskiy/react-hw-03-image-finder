@@ -19,6 +19,7 @@ export class ImageGallery extends Component {
     galleryItems: [],
     status: STATUS.IDLE,
     error: null,
+    
   };
 
   fetchMoreImages = () => {
@@ -28,7 +29,7 @@ export class ImageGallery extends Component {
       .then(data => {
         console.log(data);
         if (data.hits.length === 0) {
-          this.setState({ status: STATUS.REJECTED });
+          this.setState({  status: STATUS.REJECTED });
         } else {
           this.setState(prevState => ({
             galleryItems: [...prevState.galleryItems, ...data.hits],
@@ -40,12 +41,12 @@ export class ImageGallery extends Component {
       .catch(error => this.setState({ error, status: STATUS.REJECTED }));
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (prevProps.searchText !== this.props.searchText) {
       this.setState({
         status: STATUS.PENDING,
         galleryItems: [],
-        currentPage: this.state.currentPage,
+        currentPage: this.props.currentPage,
       });
 
       this.fetchMoreImages();
@@ -62,19 +63,34 @@ export class ImageGallery extends Component {
     }
 
     if (status === STATUS.REJECTED) {
+      console.log(error);
       return error ? <div>{error.message}</div> : <h2>not found image</h2>;
     }
 
-    if (status === STATUS.RESOLVED) {
-      return (
+      if(status === STATUS.RESOLVED) {
+        return <>
         <ul className={css.ImageGallery}>
-          {galleryItems.map(el => {
-            return <ImageGalleryItem key={el.id} el={el} tags={el.tags} />;
-          })}
-          <Button onClick={this.fetchMoreImages} />
-        </ul>
-      );
-    }
+        {galleryItems.map(el => {
+          return <ImageGalleryItem key={el.id} el={el} tags={el.tags} />;
+        })}
+        
+      </ul>
+      <Button onClick={this.fetchMoreImages} /></>
+      }
+    // return (
+    //   <>
+    //   { status === STATUS.RESOLVED &&
+    //     (<ul className={css.ImageGallery}>
+    //       {galleryItems.map(el => {
+    //         return <ImageGalleryItem key={el.id} el={el} tags={el.tags} />;
+    //       })}
+          
+    //     </ul>)
+    //   }
+    //   {status === STATUS.PENDING && <Loader />}
+      
+    //     </>
+    //   );
   }
 }
 
