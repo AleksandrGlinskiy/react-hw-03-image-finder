@@ -19,7 +19,6 @@ export class ImageGallery extends Component {
     galleryItems: [],
     status: STATUS.IDLE,
     error: null,
-    
   };
 
   fetchMoreImages = () => {
@@ -29,7 +28,7 @@ export class ImageGallery extends Component {
       .then(data => {
         console.log(data);
         if (data.hits.length === 0) {
-          this.setState({  status: STATUS.REJECTED });
+          this.setState({ status: STATUS.REJECTED });
         } else {
           this.setState(prevState => ({
             galleryItems: [...prevState.galleryItems, ...data.hits],
@@ -58,39 +57,38 @@ export class ImageGallery extends Component {
     if (status === STATUS.IDLE) {
       return <h1>Please enter text</h1>;
     }
-    if (status === STATUS.PENDING) {
-      return <Loader />;
-    }
+    // if (status === STATUS.PENDING) {
+    //   return <Loader />;
+    // }
 
     if (status === STATUS.REJECTED) {
       console.log(error);
       return error ? <div>{error.message}</div> : <h2>not found image</h2>;
     }
 
-      if(status === STATUS.RESOLVED) {
-        return <>
-        <ul className={css.ImageGallery}>
-        {galleryItems.map(el => {
-          return <ImageGalleryItem key={el.id} el={el} tags={el.tags} />;
-        })}
+    // if(status === STATUS.RESOLVED) {
+    //   return <>
+    //   <ul className={css.ImageGallery}>
+    //   {galleryItems.map(el => {
+    //     return <ImageGalleryItem key={el.id} el={el} tags={el.tags} />;
+    //   })}
+
+    // </ul>
+    // 
+    // }
+    return (
+      <>
         
-      </ul>
-      <Button onClick={this.fetchMoreImages} /></>
-      }
-    // return (
-    //   <>
-    //   { status === STATUS.RESOLVED &&
-    //     (<ul className={css.ImageGallery}>
-    //       {galleryItems.map(el => {
-    //         return <ImageGalleryItem key={el.id} el={el} tags={el.tags} />;
-    //       })}
-          
-    //     </ul>)
-    //   }
-    //   {status === STATUS.PENDING && <Loader />}
-      
-    //     </>
-    //   );
+        <ul className={css.ImageGallery}>
+          {galleryItems.map(el => {
+            return <ImageGalleryItem key={el.id} el={el} tags={el.tags} />;
+          })}
+        </ul>
+        {status === STATUS.PENDING && <Loader />}
+        {status === STATUS.RESOLVED && <Button onClick={this.fetchMoreImages} />}
+        
+      </>
+    );
   }
 }
 
